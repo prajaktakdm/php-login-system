@@ -22,15 +22,30 @@
     $password1 = $_POST['password1'] ?? null;
     $password2 = $_POST['password2'] ?? null;
     
+    if(strlen($name) <= 3){
+      $error = 1;
+      $name_err="Name should be greater than 3 characters.";
+    }
+
     // validation
     if(!$name){
       $name_err = "Name is empty.";
       $error = 1;
     }
+
+    // if (preg_match("/\d/", $name)) {
+    //   $name_err = "Name should not conatain any digit.";
+    //   $error = 1;
+    // }
       
     if(!$email){
       $email_err = "Email is empty.";
       $error = 1;
+    }
+
+    if(strlen($mobile) != 10){
+      $error = 1;
+      $mobile_err="Mobile number should be 10 digit.";
     }
 
     if(!$mobile){
@@ -38,9 +53,41 @@
         $error = 1;
       }
 
+    // if(strlen($password1) != 8){
+    //   $error = 1;
+    //   $pass_err = "Password should be 8 digit.";
+    // }
+
     if(!$password1){
       $pass_err = "Password is empty.";
       $error = 1;
+    }
+
+    if($password1){
+      if (strlen($password1) < 8 || strlen($password1) > 16) {
+        $pass_err = "Password should be min 8 characters and max 16 characters";
+        $error = 1;
+      }
+      if (!preg_match("/\d/", $password1)) {
+        $pass_err = "Password should contain at least one digit";
+        $error = 1;
+      }
+      if (!preg_match("/[A-Z]/", $password1)) {
+        $pass_err = "Password should contain at least one Capital Letter";
+        $error = 1;
+      }
+      if (!preg_match("/[a-z]/", $password1)) {
+        $pass_err = "Password should contain at least one small Letter";
+        $error = 1;
+      }
+      if (!preg_match("/\W/", $password1)) {
+        $pass_err = "Password should contain at least one special character";
+        $error = 1;
+      }
+      if (preg_match("/\s/", $password1)) {
+        $pass_err = "Password should not contain any white space";
+        $error = 1;
+      }
     }
 
     if(!$password2){
@@ -52,6 +99,7 @@
       $password2_err = "Password not match.";
       $error = 1;
     }
+
 
     if(!$error) {
 
@@ -131,6 +179,7 @@
               <label for="pwd1" class="form-label">Password:</label>
               <input type="password" class="form-control" id="pwd1" placeholder="Enter password" name="password1">
               <span class="text-danger"><?php echo $pass_err; ?></span>
+              
             </div>
             
             <div class="mb-3">
